@@ -4,5 +4,15 @@ library(tidyverse)
 #install.packages("PerformanceAnalytics")
 library(PerfomanceAnalytics)
 btc <- read.csv("C:/Users/neard/Downloads/TME115/btcusd_1-min_data.csv") # The actual path will be changed in the future to be possible to be reproduced on other platforms, and the file will be changed in 06-01-2025
+```
 
 ```{r}
+conversor <- function(unix_column){
+as.POSIXct(unix_column, origin = "1970-01-01", tz = "UTC")
+}
+btc$Timestamp <- conversor(btc$Timestamp)
+```
+
+#Checking for possible convertion errors:
+erros <- which(is.na(btc$Timestamp)
+
