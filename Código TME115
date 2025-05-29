@@ -14,5 +14,6 @@ btc$Timestamp <- conversor(btc$Timestamp)
 ```
 
 #Checking for possible convertion errors:
+```{r}
 erros <- which(is.na(btc$Timestamp)
-
+```
