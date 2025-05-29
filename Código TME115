@@ -1,0 +1,8 @@
+# First of all, it's necessary to install the packages that will be necessary for the development of this project. 
+```{r}
+library(tidyverse)
+#install.packages("PerformanceAnalytics")
+library(PerfomanceAnalytics)
+btc <- read.csv("C:/Users/neard/Downloads/TME115/btcusd_1-min_data.csv") # The actual path will be changed in the future to be possible to be reproduced on other platforms, and the file will be changed in 06-01-2025
+
+```{r}
