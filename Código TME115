@@ -20,6 +20,12 @@ erros <- which(is.na(btc$Timestamp)
 ```
 
 
+#To stop the dataset in a specific data
+```{r}
+btc %>%
+filter( btc%Timestamp < as.Date(2025-06-01)
+```
+
 #Grouping by year
 ```{r}
 setDT(btc) # Converting data.table 
@@ -41,6 +47,8 @@ CLose = last(Close),
 Volume = sum(Volume),
 n=.N
 ), by = (year_month = floor_date(datetime, "month"))]
+
+```{r}
 
 
 
