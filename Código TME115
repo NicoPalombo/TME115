@@ -3,6 +3,7 @@
 library(tidyverse)
 #install.packages("PerformanceAnalytics")
 library(PerfomanceAnalytics)
+library(data.table)
 btc <- read.csv("C:/Users/neard/Downloads/TME115/btcusd_1-min_data.csv") # The actual path will be changed in the future to be possible to be reproduced on other platforms, and the file will be changed in 06-01-2025
 ```
 
@@ -16,4 +17,33 @@ btc$Timestamp <- conversor(btc$Timestamp)
 #Checking for possible convertion errors:
 ```{r}
 erros <- which(is.na(btc$Timestamp)
+```
+
+
+#Grouping by year
+```{r}
+setDT(btc) # Converting data.table 
+btc_annual <- btc[,.(
+Open = first(Open),
+High = max(High),
+Low = min(Low),
+Close = last(Close),
+Volume = sum(Volume),
+n =.N
+),by = year(datatime)]
+
+#Grouping by month
+btc_monthly <- btc[,.(
+Open = first(Open),
+High = max(High),
+Low = min(Low),
+CLose = last(Close),
+Volume = sum(Volume),
+n=.N
+), by = (year_month = floor_date(datetime, "month"))]
+
+
+
+
+
 ```
