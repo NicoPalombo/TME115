@@ -20,7 +20,7 @@ erros <- which(is.na(btc$Timestamp)
 ```
 
 
-#To stop the dataset in a specific data
+#To stop the dataset in a specific data ( change to 2013-01-01 to 2025-06-01)
 ```{r}
 btc %>%
 filter( btc%Timestamp < as.Date(2025-06-01)
