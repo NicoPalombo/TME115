@@ -29,6 +29,7 @@ erros <- which(is.na(btc$Timestamp)
 
 
 #Grouping by month
+```{r}
 btc_m <- btc %>%
   mutate(
   date = as.Date(Timestamp),
@@ -42,7 +43,7 @@ summarise(
   Close = last(Close),
   Volume = sum(Volume)
 )
-
+```
 
 #Candlestick grouping by month
 ggplot(btc_m, aes(x = month)) +
