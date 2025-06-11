@@ -1,12 +1,20 @@
 # First of all, it's necessary to install the packages that will be necessary for the development of this project. 
 ```{r}
 library(tidyverse)
-#install.packages("PerformanceAnalytics")
-library(PerfomanceAnalytics)
-library(data.table)
-btc <- read.csv("C:/Users/neard/Downloads/TME115/btcusd_1-min_data.csv") # The actual path will be changed in the future to be possible to be reproduced on other platforms, and the file will be changed in 06-01-2025
+library(tidyquant)
+library(ggplot2)
+library(quantmod)
+library(TTR)
+library(PerformanceAnalytics)
+library(dplyr)
+library(lubridate)
+library(magrittr)
+library(scales)
+btc <- read.csv("C:/Users/neard/Downloads/bitcoin(2013-2025).csv") # The actual path will be changed in the future to be possible to be reproduced on other platforms, and the file will be changed in 06-01-2025
 ```
 
+
+#Conversor
 ```{r}
 conversor <- function(unix_column){
 as.POSIXct(unix_column, origin = "1970-01-01", tz = "UTC")
@@ -20,39 +28,38 @@ erros <- which(is.na(btc$Timestamp)
 ```
 
 
-#To stop the dataset in a specific data ( change to 2013-01-01 to 2025-06-01)
-```{r}
-btc %>%
-filter(between( btc$TimeStamp, as.Date("2013-01-01"), as.Date("2025-06-01")))
-```
-
-#Grouping by year
-```{r}
-setDT(btc) # Converting data.table 
-btc_annual <- btc[,.(
-Open = first(Open),
-High = max(High),
-Low = min(Low),
-Close = last(Close),
-Volume = sum(Volume),
-n =.N
-),by = year(datatime)]
-
 #Grouping by month
-btc_monthly <- btc[,.(
-Open = first(Open),
-High = max(High),
-Low = min(Low),
-CLose = last(Close),
-Volume = sum(Volume),
-n=.N
-), by = (year_month = floor_date(datetime, "month"))]
+btc_m <- btc %>%
+  mutate(
+  date = as.Date(Timestamp),
+  month = floor_date(date,"month")
+) %>%
+group_by(month) %>%
+summarise(
+  Open = first(Open),
+  High = max(High),
+  Low = min(Low),
+  Close = last(Close),
+  Volume = sum(Volume)
+)
 
 
-
-Structu
-```{r}
-
+#Candlestick grouping by month
+ggplot(btc_m, aes(x = month)) +
+  geom_linearange(aes(ymin = Low, ymax = High), color = "black", linewidth = 0) +
+  geom_rect(
+  aes(
+      xmin = month - 20
+      xmax = month + 20
+      ymin = pmin(Open, Close),
+      ymax = pmax(Open, Close),
+      fill = ifelse(Close >= Open, "green", "red")
+),
+  color = "white"
+) +
+scale_y_continuous(labels = dollar_format()) +
+labs(title = "Candlestick Mensal do Bitcoin", x = "Mês", y = "Preço (USD)") +
+theme_minimal()
 
 
 
