@@ -46,6 +46,7 @@ summarise(
 ```
 
 #Candlestick grouping by month
+```{r}
 ggplot(btc_m, aes(x = month)) +
   geom_linearange(aes(ymin = Low, ymax = High), color = "black", linewidth = 0) +
   geom_rect(
@@ -61,8 +62,8 @@ ggplot(btc_m, aes(x = month)) +
 scale_y_continuous(labels = dollar_format()) +
 labs(title = "Candlestick Mensal do Bitcoin", x = "Mês", y = "Preço (USD)") +
 theme_minimal()
-
-
-
-
 ```
+
+
+
+
