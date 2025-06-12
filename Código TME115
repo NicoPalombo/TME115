@@ -24,7 +24,7 @@ btc$Timestamp <- conversor(btc$Timestamp)
 
 #Checking for possible convertion errors:
 ```{r}
-erros <- which(is.na(btc$Timestamp)
+erros <- which(is.na(btc$Timestamp))
 ```
 
 
@@ -51,8 +51,8 @@ ggplot(btc_m, aes(x = month)) +
   geom_linearange(aes(ymin = Low, ymax = High), color = "black", linewidth = 0) +
   geom_rect(
   aes(
-      xmin = month - 20
-      xmax = month + 20
+      xmin = month - 20,
+      xmax = month + 20,
       ymin = pmin(Open, Close),
       ymax = pmax(Open, Close),
       fill = ifelse(Close >= Open, "green", "red")
