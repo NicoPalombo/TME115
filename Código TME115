@@ -27,6 +27,19 @@ btc$Timestamp <- conversor(btc$Timestamp)
 erros <- which(is.na(btc$Timestamp))
 ```
 
+```{r}
+btc_d <- btc %>%
+  mutate(date = as.Date(Timestamp)) %>%
+  group_by(date)%>%
+  summarise(
+    Open = first(Open),
+    High = max(High),
+    Low = min(Low),
+    Close = last(Close),
+    Volume = sum(Volume)
+  )
+```
+
 
 #Grouping by month
 ```{r}
@@ -64,6 +77,59 @@ labs(title = "Candlestick Mensal do Bitcoin", x = "Mês", y = "Preço (USD)") +
 theme_minimal()
 ```
 
+#Grouping by day 
+```{r}
+btc_d <- btc %>%
+  mutate(date = as.Date(Timestamp)) %>%
+  group_by(date)%>%
+  summarise(
+    Open = first(Open), # Preço de abertura do primeiro registro/ começo do dia 
+    High = max(High), #Preço máximo registrado no dia 
+    Low = min(Low), # Preço mínimo registrado no dia 
+    Close = last(Close), #Preço do último registro do dia 
+    Volume_diario = sum(Volume, na.rm = TRUE), #Volume total do dia 
+    Retorno_diario = last(Close) / first(Open) - 1, #Retorno diário
+    Volatilidade = sd((High - Low) / Open, na.rm = TRUE)#Volatilidade intradiária
+  )
+
+```
+
+#Correlation between return and amount
+```{r}
+altas <- btc_d[btc_d$Retorno_diario > 0, ]
+baixa <- btc_d[btc_d$Retorno_diario < 0, ]
+correlacao_alta <- cor(
+  altas$Retorno_diario,
+  altas$Volume_diario,
+  use = "complete.obs"
+)
+
+correlacao_baixa <- cor(
+  baixa$Retorno_diario,
+  baixa$Volume_diario,
+  use = "complete.obs"
+)
+
+print(paste("Correlação nos dias de alta(retorno diário > 0):", round(correlacao_alta,3))) 
+
+print(paste("Correlação em dias de baixa(retorno diário < 0):", round(correlacao_baixa,3)))
+
+```
+# Adicional ( Só para testar a significância das variáveis)
+```{r}
+cor.test(
+  altas$Retorno_diario,
+  altas$Volume_diario,
+  method = "pearson",
+  use = "complete.obs"
+)
+cor.test(
+  baixa$Retorno_diario,
+  baixa$Volume_diario,
+  method = "pearson",
+  use = "complete.obs"
+)
+```
 
 
 
