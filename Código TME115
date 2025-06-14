@@ -29,42 +29,6 @@ btc$Timestamp <- conversor(btc$Timestamp)
 erros <- which(is.na(btc$Timestamp))
 ```
 
-#Grouping by month
-```{r}
-btc_m <- btc %>%
-  mutate(
-  date = as.Date(Timestamp),
-  month = floor_date(date,"month")
-) %>%
-group_by(month) %>%
-summarise(
-  Open = first(Open),
-  High = max(High),
-  Low = min(Low),
-  Close = last(Close),
-  Volume = sum(Volume)
-)
-```
-
-#Candlestick grouping by month
-```{r}
-ggplot(btc_m, aes(x = month)) +
-  geom_linearange(aes(ymin = Low, ymax = High), color = "black", linewidth = 0) +
-  geom_rect(
-  aes(
-      xmin = month - 20,
-      xmax = month + 20,
-      ymin = pmin(Open, Close),
-      ymax = pmax(Open, Close),
-      fill = ifelse(Close >= Open, "green", "red")
-),
-  color = "white"
-) +
-scale_y_continuous(labels = dollar_format()) +
-labs(title = "Candlestick Mensal do Bitcoin", x = "Mês", y = "Preço (USD)") +
-theme_minimal()
-```
-
 #Grouping by day 
 ```{r}
 btc_d <- btc %>%
