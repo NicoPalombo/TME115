@@ -45,6 +45,26 @@ btc_d <- btc %>%
   )
 ```
 
+#Candlestick graph grouping by day
+```{r}
+btc_d %>%
+ggplot(aes(x = date, y = Close)) +
+geom
+
+
+
+
+
+
+```
+
+
+
+
+
+
+
+
 #Correlation between return and amount
 ```{r}
 altas <- btc_d[btc_d$Retorno_diario > 0, ]
