@@ -1,4 +1,4 @@
-#Installign Packages
+#Installing packages
 ```{r}
 library(tidyverse)
 library(tidyquant)
@@ -11,7 +11,8 @@ library(lubridate)
 library(magrittr)
 library(scales)
 btc <- read.csv("C:/Users/neard/Downloads/bitcoin(2013-2025).csv") 
-# The actual path will be changed in the future to be possible to be reproduced on other platforms
+# The actual path will be changed in the future 
+#to be possible to be reproduced on other platforms
 ```
 
 
@@ -27,20 +28,6 @@ btc$Timestamp <- conversor(btc$Timestamp)
 ```{r}
 erros <- which(is.na(btc$Timestamp))
 ```
-
-```{r}
-btc_d <- btc %>%
-  mutate(date = as.Date(Timestamp)) %>%
-  group_by(date)%>%
-  summarise(
-    Open = first(Open),
-    High = max(High),
-    Low = min(Low),
-    Close = last(Close),
-    Volume = sum(Volume)
-  )
-```
-
 
 #Grouping by month
 ```{r}
