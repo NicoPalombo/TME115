@@ -1,4 +1,4 @@
-# First of all, it's necessary to install the packages that will be necessary for the development of this project. 
+#Installign Packages
 ```{r}
 library(tidyverse)
 library(tidyquant)
@@ -10,7 +10,8 @@ library(dplyr)
 library(lubridate)
 library(magrittr)
 library(scales)
-btc <- read.csv("C:/Users/neard/Downloads/bitcoin(2013-2025).csv") # The actual path will be changed in the future to be possible to be reproduced on other platforms, and the file will be changed in 06-01-2025
+btc <- read.csv("C:/Users/neard/Downloads/bitcoin(2013-2025).csv") 
+# The actual path will be changed in the future to be possible to be reproduced on other platforms
 ```
 
 
