@@ -35,13 +35,13 @@ btc_d <- btc %>%
   mutate(date = as.Date(Timestamp)) %>%
   group_by(date)%>%
   summarise(
-    Open = first(Open), # Preço de abertura do primeiro registro/ começo do dia 
-    High = max(High), #Preço máximo registrado no dia 
-    Low = min(Low), # Preço mínimo registrado no dia 
-    Close = last(Close), #Preço do último registro do dia 
-    Volume_diario = sum(Volume, na.rm = TRUE), #Volume total do dia 
-    Retorno_diario = last(Close) / first(Open) - 1, #Retorno diário
-    Volatilidade = sd((High - Low) / Open, na.rm = TRUE)#Volatilidade intradiária
+    Open = first(Open), #First record opening price/start of day
+    High = max(High), #Maximum price recorded on the day 
+    Low = min(Low), #Minimum price recorded on the day
+    Close = last(Close), #Price of the last record of the day
+    Volume_diario = sum(Volume, na.rm = TRUE), #Total volume of the day
+    Retorno_diario = last(Close) / first(Open) - 1, #Daily return
+    Volatilidade = sd((High - Low) / Open, na.rm = TRUE)#Intraday volatility
   )
 ```
 
@@ -203,6 +203,28 @@ cor.test(
   use = "complete.obs"
 )
 ```
+#Positive correlation graph
+```{r}
+ggplot(alta, aes(x = log(Volume_diario), y = Retorno_diario)) + 
+  geom_point(alpha = 0.5, color = "green") +
+  geom_smooth(method = "lm", color = "black", se = TRUE) + 
+  labs(title = paste("Dias de Alta (Correlação =", round(correlacao_alta, 3), ")"),
+    x = "Volume Diário (BTC)",
+       y = "Retorno Diário (%)"
+  ) +
+  theme_minimal()
+```
 
 
+#Negative correlation graph
+```{r}
+ggplot(baixa, aes(x= log(Volume_diario), y = Retorno_diario)) +
+  geom_point(alpha = 0.5, color = "red") +
+  geom_smooth(method = "lm", color = "black", se = TRUE) +
+  labs( title = paste("Dias de Baixa (Correlação =", round(correlacao_baixa, 3), ")"),
+        x = "Volume Diário (BTC)",
+        y = "Retorno Diário (%)"
+  ) + 
+  theme_minimal()
+```
 
