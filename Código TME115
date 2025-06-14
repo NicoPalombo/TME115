@@ -47,21 +47,123 @@ btc_d <- btc %>%
 
 #Candlestick graph grouping by day
 ```{r}
-btc_d %>%
-ggplot(aes(x = date, y = Close)) +
-geom
-
-
-
-
-
-
+btc_d %>% 
+  ggplot(aes(x = date, y = Close)) + 
+  geom_candlestick(aes(open = Open, high = High, low = Low, close = Close),
+                      clour_up = "darkgreen", colour_down = "darkred",
+                      fill_up = "lightgreen", fill_down = "pink") +
+  geom_ma(ma_fun = SMA, n = 20, color = "black", linetype = 0, size = 0) +
+labs(y = "Preço (USD)",
+    x = "Data") +
+theme_tq()
 ```
 
 
+#Mt.Gox Analysis
+```{r}
+start_date <- as.Date("2014-01-01")
+end_date <- as.Date("2015-06-30")
+
+btc_mtgox <- btc_d %>%
+  filter(date >= as.Date("2014-01-01") & date<= as.Date("2015-12-31"))
 
 
 
+ggplot(btc_mtgox, aes(x = date)) +
+  # Candlesticks
+  geom_linerange(aes(ymin = Low, ymax = High), color = "black", linewidth = 0.1) +
+  geom_rect(
+    aes(xmin = date - 1, xmax = date + 1,
+        ymin = pmin(Open, Close), ymax = pmax(Open, Close),
+        fill = ifelse(Close >= Open, "green", "red")),
+    color = "white", linewidth = 0
+  ) +
+  
+  # Mt.Gox events 
+  geom_vline(
+    xintercept = as.Date(c("2014-02-07", "2014-02-24", "2014-02-28")),
+    color = "darkred", linetype = "solid", linewidth = 0.8, alpha = 0.9
+  ) +
+  
+  # Adjusting scale
+  scale_x_date(
+    limits = c(start_date, end_date),  # Zoom no período selecionado
+    date_labels = "%b/%Y",             # Formato da data (ex: "Fev/2014")
+    date_breaks = "2 months"           # Intervalo dos rótulos
+  ) +
+  scale_y_continuous(
+    limits = c(min(btc_mtgox$Low) * 0.9, max(btc_mtgox$High) * 1.1),  # Amplitude de preço
+    labels = dollar_format()
+  ) +
+  
+  # Colors
+  scale_fill_manual(values = c("green" = "#00C805", "red" = "#FF0000"), guide = "none") +
+  labs(
+    title = "Impacto do Mt. Gox (Jan/2014 - Jun/2015)",
+    subtitle = "Zoom no período crítico com candlesticks diários",
+    x = "Data",
+    y = "Preço (USD)"
+  ) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(face = "bold", size = 14),
+    panel.grid.minor = element_blank() 
+  )
+```
+
+#Pandemic Analysis 
+```{r}
+btc_pandemia <- btc_d %>%
+  filter(date >= as.Date("2020-03-11") & date <= as.Date("2023-05-05"))
+eventos_p <- data.frame(
+  datap = as.Date(c("2020-03-11","2023-05-05")),
+  label = c("\nComeço pandemia", "\nFim da pandemia"),
+  colorp = c("#FF0000", "#006400")
+)
+
+ggplot(btc_pandemia, aes(x = date)) +
+  geom_linerange(aes(ymin = Low, ymax = High), color = "black", linewidth = 0.1) +
+  geom_rect(
+    aes(xmin = date - 4, xmax = date + 4,
+        ymin = pmin(Open, Close), ymax = pmax(Open, Close),
+        fill = ifelse(Close >= Open, "green", "red")),
+    color = "white", linewidth = 0
+  ) + 
+  geom_vline(
+    data = eventos_p,
+    aes(xintercept = datap, color = colorp),
+    linetype = "solid", linewidth = 0.8, alpha = 0.7
+  ) +
+  geom_text(
+    data = eventos_p,
+    aes(x = datap, y= max(btc_pandemia$High)*1.05, label = label ,color = colorp),
+    vjust = -.5, size = 3, fontface = "bold"
+  ) +
+  scale_x_date(
+    limits = c(as.Date("2020-03-11"),as.Date("2023-05-05")),
+    date_labels = "%b/%Y",
+    date_breaks = "3 months"
+  ) +
+  scale_y_continuous(
+    labels = dollar_format(),
+    limits = c(min(btc_pandemia$Low) * 0.8, max(btc_pandemia$High) * 1.1)
+  ) +
+  
+  scale_fill_identity() +
+  scale_color_identity()+
+  labs(
+    title = "Bitcoin durante a Pandemia de COVID-19 (2020-2023)",
+    x = "Data",
+    y = "Preço (USD)"
+  ) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(face = "bold", size = 14),
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    panel.grid.minor =element_blank()
+  )
+
+```
 
 
 
@@ -86,7 +188,7 @@ print(paste("Correlação nos dias de alta(retorno diário > 0):", round(correla
 print(paste("Correlação em dias de baixa(retorno diário < 0):", round(correlacao_baixa,3)))
 
 ```
-# Adicional ( Só para testar a significância das variáveis)
+#Additional (Just to test the significance of the variables)
 ```{r}
 cor.test(
   altas$Retorno_diario,
