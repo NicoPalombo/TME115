@@ -79,7 +79,6 @@ btc_d <- btc %>%
     Retorno_diario = last(Close) / first(Open) - 1, #Retorno diário
     Volatilidade = sd((High - Low) / Open, na.rm = TRUE)#Volatilidade intradiária
   )
-
 ```
 
 #Correlation between return and amount
