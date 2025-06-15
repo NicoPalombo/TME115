@@ -166,7 +166,6 @@ ggplot(btc_pandemia, aes(x = date)) +
 ```
 
 
-
 #Correlation between return and amount
 ```{r}
 altas <- btc_d[btc_d$Retorno_diario > 0, ]
@@ -188,6 +187,7 @@ print(paste("Correlação nos dias de alta(retorno diário > 0):", round(correla
 print(paste("Correlação em dias de baixa(retorno diário < 0):", round(correlacao_baixa,3)))
 
 ```
+
 #Additional (Just to test the significance of the variables)
 ```{r}
 cor.test(
@@ -203,9 +203,10 @@ cor.test(
   use = "complete.obs"
 )
 ```
+
 #Positive correlation graph
 ```{r}
-ggplot(alta, aes(x = log(Volume_diario), y = Retorno_diario)) + 
+ggplot(altas, aes(x = log(Volume_diario), y = Retorno_diario)) + 
   geom_point(alpha = 0.5, color = "green") +
   geom_smooth(method = "lm", color = "black", se = TRUE) + 
   labs(title = paste("Dias de Alta (Correlação =", round(correlacao_alta, 3), ")"),
@@ -214,7 +215,6 @@ ggplot(alta, aes(x = log(Volume_diario), y = Retorno_diario)) +
   ) +
   theme_minimal()
 ```
-
 
 #Negative correlation graph
 ```{r}
