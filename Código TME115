@@ -50,7 +50,7 @@ btc_d <- btc %>%
 btc_d %>% 
   ggplot(aes(x = date, y = Close)) + 
   geom_candlestick(aes(open = Open, high = High, low = Low, close = Close),
-                      clour_up = "darkgreen", colour_down = "darkred",
+                      colour_up = "darkgreen", colour_down = "darkred",
                       fill_up = "lightgreen", fill_down = "pink") +
   geom_ma(ma_fun = SMA, n = 20, color = "black", linetype = 0, size = 0) +
 labs(y = "Preço (USD)",
