@@ -110,6 +110,62 @@ ggplot(btc_mtgox, aes(x = date)) +
     panel.grid.minor = element_blank() 
   )
 ```
+#Pre-pandemic
+```{r}
+btc_pre_hazard <- btc_d %>%
+  filter(date >= as.Date("2019-01-01") & date <= as.Date("2020-12-31"))
+eventos_pre_hazard <- data.frame(
+  data_pre_hazard = as.Date(c("2019-01-01","2020-03-11","2020-12-31")),
+  label_hazard = c("","Começo pandemia",""),
+  color_pre_hazard = c("#FF0000","#FF0000","#FF0000")
+)
+
+
+
+ggplot(btc_pre_hazard, aes(x = date)) +
+  geom_linerange(aes(ymin = Low, ymax = High), color = "black", linewidth = 0.1)+
+  geom_rect(
+    aes(xmin = date - 4, xmax = date + 4,
+        ymin = pmin(Open, Close), ymax = pmax(Open, Close),
+        fill = ifelse(Close >= Open, "green", "red")),
+    color = "white", linewidth = 0
+  ) +
+  geom_vline(
+    data = eventos_pre_hazard,
+    aes(xintercept = data_pre_hazard, color = color_pre_hazard),
+    linetype = "solid", linewidth = 0.8, alpha = 0.7
+  ) +
+  geom_text(
+    data = eventos_pre_hazard,
+    aes(x = data_pre_hazard, y=max(btc_pre_hazard$High)*1.05, label = label_hazard, color = color_pre_hazard),
+    vjust = -.5, size = 3, fontface = "bold"
+  ) + 
+  scale_x_date(
+    limits = c(as.Date("2019-01-01"), as.Date("2020-12-31")),
+               date_labels = "%b/%Y",
+               date_breaks = "3 months"
+  ) +
+  scale_y_continuous(
+    labels = dollar_format(),
+    limits = c(min(btc_pre_hazard$Low)*0.8, max(btc_pre_hazard$High)*1.1)
+  ) +
+  
+  scale_fill_identity() +
+  scale_color_identity() +
+labs(
+  title = "Bitcoin entre 2019 e 2020",
+  x = "Data",
+  y = "Preço (USD)"
+) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(face = "bold", size = 14),
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    panel.grid.minor = element_blank()
+  )
+  
+```
+
 
 #Pandemic Analysis 
 ```{r}
