@@ -1,0 +1,103 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%% Configurações Iniciais E Pacotes %%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\documentclass[12pt]{article}
+
+% Codificação e idioma
+\usepackage[utf8]{inputenc}  % Permite acentuação
+\usepackage[T1]{fontenc}         % Melhora a saída da fonte
+\usepackage[brazil]{babel}    % Ajuste para pt-br
+
+% Layout e fontes
+\usepackage{geometry}               % Margens personalizadas
+\usepackage{newtxtext,newtxmath}    % Fonte Times New Roman para texto e matemática
+\usepackage{setspace}               % Controle de espaçamento entre linhas
+\usepackage{indentfirst}            % Primeiro parágrafo de cada seção será indentado automaticamente
+\usepackage{eso-pic}                % Adiciona variados elementos na página
+
+% Tabelas e gráficos
+\usepackage{booktabs}        % Tabelas bonitas
+\usepackage{graphicx}        % Inclusão de imagens
+\usepackage{fancybox}        % Bordas na imagem
+
+% URLs e links personalizados
+\usepackage[colorlinks=true,
+            linkcolor=cyan!30!blue,
+            citecolor=cyan!30!blue,
+            urlcolor=cyan!30!blue
+            pdfauthor={Rafael Gomes Carneiro},
+            pdftitle={Relatório Cíentifico - Bitcoin: A História em Dados}]{hyperref}
+            
+\usepackage[capitalize,nameinlink]{cleveref}  
+% capitalize: coloca a primeira letra maiúscula em "Figura", "Tabela", etc
+% nameinlink: Deixa o nome da referência também como link (não só o número)
+
+% Configura os links
+\crefname{figure}{Figura}{Figuras}
+
+%Ajuste de margens das páginas 
+\geometry{
+  a4paper,
+  top=3cm,
+  left=3cm,
+  bottom=2cm,
+  right=2cm
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\title{Bitcoin: A História em Dados}
+\author{Bruce Trevisan \\ 
+        Nicolas Palombo Lucas \\ 
+        Otávio Ribeiro Mello \\ 
+        Rafael Gomes Carneiro}
+\date{ME115B - Linguagem R \\ 
+        Tatiana Andrea Benaglia Carvalho \\ 
+        Campinas, 2025}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{document}
+
+\pagenumbering{gobble} % Limpa a contagem de folhas
+
+% Página de capa separada
+\input{Seções/0.Capa}
+
+\newpage
+
+\section{\textbf{Resumo}}
+
+\input{Seções/1.Resumo}
+
+\newpage
+
+\pagenumbering{arabic} % Começo de contagem de folhas
+
+\section{\textbf{Introdução}}
+
+\input{Seções/2.Introdução}
+
+\section{\textbf{Material e Métodos:}}
+
+\input{Seções/3.0.Material e Métodos}
+
+\section{\textbf{Resultados:}}
+
+\input{Seções/4.Resultados}
+
+\section{\textbf{Considerações Finais:}}
+
+\input{Seções/5.Considerações}
+
+\newpage
+
+\section{\textbf{Referências:}}
+
+\input{Seções/6.Referências}
+
+
+
+\end{document}
